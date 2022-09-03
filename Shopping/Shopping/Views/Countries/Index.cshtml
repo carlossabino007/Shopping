@@ -24,6 +24,10 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StatesNumber)
+                            </th>
+
                             <th></th>
                         </tr>
                     </thead>
@@ -33,7 +37,11 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
+                               </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StatesNumber)
                                 </td>
+
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a> |
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline- btn-info">Detalles</a> |
@@ -49,11 +57,13 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#MyTable').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
