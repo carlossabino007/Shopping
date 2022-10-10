@@ -11,7 +11,7 @@ namespace Shopping.Data
 
         {
         }
-
+        // Mapeo la base de datos.
         public DbSet<Category> Categories { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -28,8 +28,10 @@ namespace Shopping.Data
             modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<State>().HasIndex("Name","CountryId").IsUnique();
             modelBuilder.Entity<City>().HasIndex("Name", "StateId").IsUnique();
-
-
+            // Despues de mapear, hago Migracion enseguida, pues se ha afectado la base de datos
+            // add-migtation Nombre
+            // Y luego update-database
+            // drop-database borro la base de datos para empezar de nuevo y luego si update-database
 
         }
     }

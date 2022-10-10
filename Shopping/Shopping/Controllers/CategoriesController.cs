@@ -9,7 +9,7 @@ namespace Shopping.Controllers
     {
         private readonly DataContext _context;
 
-        public CategoriesController(DataContext context)
+        public CategoriesController(DataContext context)  // estamos inyectando
         {
             _context = context;
         }
@@ -31,6 +31,7 @@ namespace Shopping.Controllers
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
@@ -39,9 +40,9 @@ namespace Shopping.Controllers
             {
                 try
                 {
-                    _context.Add(category);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    _context.Add(category);  // Lo adicionamos
+                    await _context.SaveChangesAsync();  // Grabamos la base de datos
+                    return RedirectToAction(nameof(Index)); // vayase a index 
                 }
 
                 catch (DbUpdateException dbUpdateException)
@@ -69,12 +70,12 @@ namespace Shopping.Controllers
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            Category category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -127,13 +128,13 @@ namespace Shopping.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+             Category category = await _context.Categories.FindAsync(id);
+            //var category = await _context.Categories
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -145,12 +146,12 @@ namespace Shopping.Controllers
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category= await _context.Categories
+            Category category= await _context.Categories
                 .FindAsync(id);
             if (category == null)
             {
@@ -165,18 +166,10 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Categories == null)
-            {
-                return Problem("Entity set 'DataContext.countries'  is null.");
-            }
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
-            {
-                _context.Categories.Remove(category);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+              Category category = await _context.Categories.FindAsync(id);
+             _context.Categories.Remove(category);
+             await _context.SaveChangesAsync();
+             return RedirectToAction(nameof(Index));
         }
 
 
