@@ -186,12 +186,12 @@ namespace Shopping.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
+            Country country = await _context.Countries.FindAsync(id);
             if (country == null)
             {
                 return NotFound();
             }
-            return View(country);
+            return View(country);   //vaya a la vista, con el país
         }
 
         // POST: Countries/Edit/5
@@ -199,7 +199,7 @@ namespace Shopping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Country country)
+        public async Task<IActionResult> Edit(int id, Country country) // Y recibo el país cambiado o no.
         {
             if (id != country.Id)
             {
@@ -210,7 +210,7 @@ namespace Shopping.Controllers
             {
                 try
                 {
-                    _context.Update(country);
+                    _context.Update(country); 
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -317,13 +317,15 @@ namespace Shopping.Controllers
                 return NotFound();
             }
 
-
+            
             // Lo cambio para usar el include
 
-            var country = await _context.Countries
-                .Include(c => c.States)
-                .FirstOrDefaultAsync(c => c.Id == id);
-                        
+            //Country country = await _context.Countries
+            //    .FirstOrDefaultAsync(m => m.Id == id);  //Puedo buscar por cualquier campo
+
+            Country country = await _context.Countries.FindAsync(id);  //Puedo buscar por cualquier campo
+
+
             if (country == null)
             {
                 return NotFound();
@@ -337,23 +339,14 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Countries == null)
-            {
-                return Problem("Entity set 'DataContext.countries'  is null.");
-            }
-            
-            var country = await _context.Countries.FindAsync(id); 
-           
-
-
-
-            if (country != null)
-            {
-                _context.Countries.Remove(country);
-            }
-
+            Country country = await _context.Countries.FindAsync(id);
+            _context.Countries.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            //if (country != null)
+            //{
+            //    _context.Countries.Remove(country);
+            //}
         }
 
         
